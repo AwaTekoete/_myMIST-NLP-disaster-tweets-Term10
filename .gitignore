@@ -1,0 +1,30 @@
+# Daten (Originaldaten bleiben lokal, nicht versioniert)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Modelle (lokal gespeicherte Baseline-Modelle)
+models/*
+!models/.gitkeep
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.ipynb_checkpoints/
+
+# Conda / venv
+.conda/
+*.egg-info/
+
+# VS Code
+.vscode/
+
+# Jupyter
+*.ipynb_checkpoints
+
+# Sonstiges
+.env
+.DS_Store
+Thumbs.db
