@@ -1,0 +1,5 @@
+,char_count,char_count,char_count,char_count,char_count,char_count,char_count,char_count,word_count,word_count,word_count,word_count,word_count,word_count,word_count,word_count
+,count,mean,std,min,25%,50%,75%,max,count,mean,std,min,25%,50%,75%,max
+target,,,,,,,,,,,,,,,,
+0,4342.0,95.70681713496084,35.88592390140917,7.0,68.0,101.0,130.0,157.0,4342.0,14.704744357438969,6.161563580819272,1.0,10.0,15.0,19.0,31.0
+1,3271.0,108.11342097217977,29.309854313585124,14.0,88.0,115.0,136.0,151.0,3271.0,15.167532864567411,5.096805739204276,2.0,11.0,15.0,19.0,30.0
