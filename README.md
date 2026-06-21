@@ -64,6 +64,15 @@ und in `data/raw/` ablegen.
 
 ---
 
+## Datenverarbeitung
+
+`data/raw/train.csv` (Original, unveraendert) wird in `01_eda.ipynb`
+geprueft und bereinigt (Duplikate, Label-Konflikte entfernt) zu
+`data/processed/train_clean.csv` (7.434 von 7.613 Zeilen). Details:
+`reports/findings.md`.
+
+---
+
 ## Phasen
 
 | # | Notebook | Inhalt |
