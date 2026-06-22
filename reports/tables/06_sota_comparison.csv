@@ -1,0 +1,9 @@
+modell,f1,roc_auc,anmerkung
+Dummy Baseline (most_frequent),0.0,0.5,Prediziert immer Mehrheitsklasse — kein Lernen
+Dummy Baseline (uniform random),0.468,0.5,Zufaellige Vorhersage — untere Grenze
+TF-IDF + LogReg (unser Champion),0.7775,0.8487,"Phase 5 Champion, 5-Fold CV, Out-of-Fold"
+TF-IDF + LinearSVC (getunt),0.7807,0.8424,Alternativ-Kandidat Phase 5
+Human-Level (Inter-Annotator Agreement),0.8,,Geschaetzt: ~80% Uebereinstimmung zwischen menschlichen Annotatoren bei ambigen Tweets (Kaggle-Datensatz ist bekannt fuer Label-Rauschen)
+BERT-base fine-tuned (realistisch),0.84,0.92,"Typisches Ergebnis ohne Test-Set-Leakage, gut dokumentiert in Literatur"
+BERTweet fine-tuned (realistisch),0.85,0.93,"Twitter-spezifisch vortrainiert (850M Tweets), Wang et al. 2020 — bester realistischer SOTA"
+Kaggle Leaderboard Top (mit Leakage),0.89,,ACHTUNG: teils durch Test-Set-Leakage verzerrt. Scores ueber 0.86 sind verdaechtig (Ceiling-Effekt durch menschliches Label-Rauschen)
