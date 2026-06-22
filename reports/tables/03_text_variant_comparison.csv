@@ -1,0 +1,5 @@
+variant,vocab_size,avg_nonzero_per_doc
+text_clean,16516,12.82
+text_no_stopwords,15803,8.84
+text_stemmed,12832,8.81
+text_lemmatized,14568,8.8
