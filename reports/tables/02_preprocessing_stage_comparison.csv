@@ -1,6 +1,6 @@
 stage,vocab_size,entropy_bits,effective_vocab,utilization_pct
-Roh (unbereinigt),21570,10.789,1769,8.2
-Bereinigt (URL/Mojibake/Zahlen),15968,10.894,1903,11.9
-Ohne Stopwords,15821,12.165,4592,29.0
-Stemmed,12850,11.666,3249,25.3
-Lemmatized,14590,11.956,3973,27.2
+Roh (unbereinigt),20719,10.82,1808,8.7
+Bereinigt (URL/Mojibake/Zahlen),15913,10.89,1898,11.9
+Ohne Stopwords,15766,12.219,4767,30.2
+Stemmed,12807,11.714,3359,26.2
+Lemmatized,14540,12.008,4119,28.3
