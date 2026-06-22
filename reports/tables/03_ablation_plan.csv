@@ -1,0 +1,5 @@
+config,method,text,ngram,min_df,lsa,priority
+A_tfidf_nostop_unigram,TF-IDF,text_no_stopwords,"(1,1)",2,False,Hauptkandidat
+B_tfidf_nostop_bigram,TF-IDF,text_no_stopwords,"(1,2)",2,False,Ablation
+C_tfidf_stemmed_unigram,TF-IDF,text_stemmed,"(1,1)",2,False,Ablation
+D_tfidf_lsa,TF-IDF+LSA,text_no_stopwords,"(1,1)",1,True,Ablation
