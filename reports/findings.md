@@ -42,3 +42,34 @@ verwendet. `train_schulversion.csv` bleibt als Fallback-Referenz erhalten.
   Qualitätsanalyse (Mutual Information, Missingness-Pattern) statt einer
   vorab getroffenen Annahme über deren Nutzlosigkeit
 - `id`-Spalte erforderlich für Kaggle-kompatibles Submission-Format
+
+---
+
+## Phase 02 — Bereinigung auf text_clean-Basis (Ergänzung zu Phase 01)
+
+**Ausgangslage:** Notebook-01-Bereinigung prueft nur auf Roh-Text-Ebene.
+URL-Entfernung, Lowercase und NUM-Normalisierung (Notebook 02) erzeugen
+weitere Duplikate/Konflikte, die erst nach text_clean sichtbar werden.
+
+**Befund (Notebook 02, Zelle 03b):**
+| Kategorie | Gruppen | Zeilen |
+|---|---|---|
+| Konflikt-Gruppen (widersprueche Labels) | 70 | 196 |
+| Davon URL-bedingt | 54 (77%) | — |
+| Davon echtes Label-Rauschen | 16 (23%) | — |
+| Harmlose Duplikate (gleiche Labels) | 245 | 437 |
+| Gesamt entfernt | | 633 |
+
+**Entscheidung:** Beide Kategorien entfernt (keep="first" bei harmlosen
+Duplikaten — je 1 Zeile pro Gruppe bleibt erhalten, nur Mehrfach-
+Gewichtung eliminiert). Begruendung: Qualitaet vor Quantitaet;
+6.801 Zeilen ausreichend fuer klassische Modelle.
+
+**Gesamtbereinigung:** 7.613 → 6.801 Zeilen (-10,7%)
+
+**Offene Punkte / Bonus-Kandidaten (Phase 8):**
+- Datensatz-Variante als Hyperparameter: bereinigt (6.801) vs.
+  original (7.613) — bei maechtigen Modellen koennte mehr Daten
+  trotz Rauschen netto vorteilhaft sein
+- Label Smoothing / Mehrheits-Voting als Alternative zum harten
+  Entfernen (State-of-the-Art bei neuronalen Netzen)
