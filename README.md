@@ -1,105 +1,168 @@
 # Disaster Tweets NLP-Klassifikation
+**MIST Term 10 — NLP Klassifikationsprojekt**
 
-Binäre Textklassifikation: Unterscheidung zwischen Tweets über reale Katastrophen
-und Tweets, die nur metaphorisch/umgangssprachlich Katastrophen-Vokabular nutzen.
-
-**Kurs:** MIST Term 10 | **Wettbewerb:** [Kaggle – NLP Getting Started](https://www.kaggle.com/c/nlp-getting-started)
+Binaere Klassifikation von Tweets: Disaster (1) vs. Kein Disaster (0).
+Datensatz: Kaggle "NLP Getting Started" Competition.
 
 ---
 
-## Projektziel
+## Ergebnisse (Standardprojekt)
 
-Lernprinzip: **Lernen → Verstehen → Dokumentieren.** State-of-the-Art (F1 ≈ 0.83–0.85,
-realistischer BERT-Klasse-Referenzwert, da Kaggle-Leaderboard-Top-Scores teils durch
-Test-Set-Leakage verzerrt sind) dient als Referenzpunkt, nicht als reines Ziel.
-Fokus liegt auf dem Verständnis der Grenzen des gewählten Ansatzes (Datensatz, Modell,
-Ressourcen) und was nötig wäre, um den Abstand zu schließen.
+| Modell | F1 Macro | ROC-AUC | MCC |
+|---|---|---|---|
+| Dummy Baseline (uniform) | 0.468 | 0.500 | 0.000 |
+| TF-IDF + LogReg (Champion) | **0.7775** | **0.8487** | **0.5551** |
+| TF-IDF + LinearSVC (getunt) | 0.7807 | 0.8424 | 0.5682 |
+| Human-Level (geschaetzt) | ~0.800 | — | — |
+| BERTweet SOTA (realistisch) | 0.850 | 0.930 | — |
+
+**Champion:** LogReg_balanced, TF-IDF Config C (text_stemmed, min_df=2)
+**Evaluierung:** 5-Fold Stratified CV, Out-of-Fold, Bootstrap-KI 95%
 
 ---
 
 ## Projektstruktur
-data/
+_myMIST-NLP-disaster-tweets-Term10/
 
-├── raw/            # Originaldaten (train.csv) – nicht versioniert, siehe unten
+├── data/
 
-└── processed/       # Transformierte Daten
-notebooks/            # 01_eda … 06_error_analysis (Reihenfolge = Bearbeitungsphasen)
+│   ├── raw/                    # Originaldaten (unveraendert)
 
-src/                  # Wiederverwendbare Module (Preprocessing, Features, Modelle, Viz)
+│   │   ├── train.csv
 
-models/               # Lokal gespeicherte Baseline-Modelle (.pkl/.joblib) – nicht versioniert
+│   │   ├── test.csv
 
-reports/
+│   │   └── sample_submission.csv
 
-├── figures/          # Plots (Store44-Farbschema), Name = <notebook-nr>_<slug>.png
+│   └── processed/
 
-├── tables/           # CSV-Exports: Metriken, Modellvergleiche
+│       ├── train_clean.csv     # Nach Phase 01 (7.434 Zeilen)
 
-└── errors/           # Fehlklassifizierte Beispiele als CSV
+│       └── train_preprocessed.csv  # Nach Phase 02 (6.801 Zeilen)
 
-submission/           # Finales Colab-Abgabe-Notebook
+├── notebooks/
+
+│   ├── 01_eda.ipynb            # EDA & Datenqualitaet
+
+│   ├── 02_preprocessing.ipynb  # Text-Bereinigung & Normalisierung
+
+│   ├── 03_vectorization.ipynb  # BoW, TF-IDF, LSA, Ablationsplan
+
+│   ├── 04_baseline.ipynb       # Baseline-Modelle (20 Kombinationen)
+
+│   ├── 05_tuning.ipynb         # Grid Search, Nested CV, Threshold
+
+│   └── 06_error_analysis.ipynb # Fehleranalyse & SOTA-Abstand
+
+├── src/
+
+│   ├── preprocessing.py        # Wiederverwendbare Preprocessing-Module
+
+│   └── viz_config.py           # Store44-Farbschema (zentralisiert)
+
+├── models/
+
+│   ├── champion_logreg.joblib  # Finales Champion-Modell
+
+│   ├── champion_vectorizer.joblib  # Finaler Vectorizer
+
+│   ├── champion_metadata.json  # Parameter & CV-Metriken
+
+│   └── registry.md             # Modell-Registry
+
+├── reports/
+
+│   ├── figures/                # Alle Visualisierungen (Store44-Stil)
+
+│   ├── tables/                 # Alle CSV-Auswertungen
+
+│   ├── errors/                 # Fehler-Exports (Phase 06)
+
+│   └── findings.md             # Vollstaendige Befund-Dokumentation
+
+├── submission/
+
+│   └── submission.csv          # Kaggle-Submission
+
+├── scripts/
+
+│   └── sanity_check.py         # Datensatz-Validierung
+
+└── requirements.txt
+
 ---
 
-## Setup
+## Reproduktion
 
-```powershell
-# Repository klonen
-git clone https://github.com/AwaTekoete/_myMIST-NLP-disaster-tweets-Term10.git
-cd _myMIST-NLP-disaster-tweets-Term10
-
-# Conda-Environment erstellen & aktivieren
-conda create -n disaster-tweets python=3.11 -y
+**Voraussetzungen:**
+```bash
+conda create -n disaster-tweets python=3.11
 conda activate disaster-tweets
-
-# Abhängigkeiten installieren
 pip install -r requirements.txt
-
-# Notebook-Diff-Filter aktivieren (lokal pro Klon erforderlich)
-nbstripout --install
 ```
 
-**Datensatz:** `train.csv` ist nicht im Repository enthalten (siehe `.gitignore`).
-Download über die [Kaggle-Wettbewerbsseite](https://www.kaggle.com/c/nlp-getting-started/data)
-und in `data/raw/` ablegen.
+**Reihenfolge der Notebooks:**
+01_eda → 02_preprocessing → 03_vectorization →
+04_baseline → 05_tuning → 06_error_analysis
+
+**Champion-Modell direkt verwenden:**
+```python
+import joblib
+from src.preprocessing import clean_text, tokenize, remove_stopwords, apply_stemming
+
+model = joblib.load("models/champion_logreg.joblib")
+vectorizer = joblib.load("models/champion_vectorizer.joblib")
+
+tweet = "forest fire near La Ronge Sask Canada"
+cleaned = " ".join(apply_stemming(
+    remove_stopwords(tokenize(clean_text(tweet)))))
+X = vectorizer.transform([cleaned])
+prob = model.predict_proba(X)[0][1]
+pred = "DISASTER" if prob >= 0.5 else "KEIN DISASTER"
+print(f"P(Disaster)={prob:.3f} → {pred}")
+```
 
 ---
 
-## Datenverarbeitung
+## Methodik-Uebersicht
 
-`data/raw/train.csv` (Original, unveraendert) wird in `01_eda.ipynb`
-geprueft und bereinigt (Duplikate, Label-Konflikte entfernt) zu
-`data/processed/train_clean.csv` (7.434 von 7.613 Zeilen). Details:
-`reports/findings.md`.
-
----
-
-## Phasen
-
-| # | Notebook | Inhalt |
-|---|----------|--------|
-| 0 | – | Setup (dieses Dokument) |
-| 1 | `01_eda.ipynb` | Datenqualität & explorative Analyse |
-| 2 | `02_preprocessing.ipynb` | Textbereinigung & Normalisierung |
-| 3 | `03_vectorization.ipynb` | BoW / TF-IDF / n-Gramme / LSA |
-| 4 | `04_baseline.ipynb` | Logistic Regression, Naive Bayes, Linear SVC + K-Fold CV |
-| 5 | `05_tuning.ipynb` | Hyperparameter-Tuning (Grid Search) |
-| 6 | `06_error_analysis.ipynb` | Fehleranalyse & SOTA-Abstand |
-| 7 | `submission/` | Colab-Konsolidierung (Abgabe-Notebook) |
-| 8 | Bonus-Branch | Dichte/gelernte Embeddings, ggf. Transformer-Finetuning |
+| Phase | Inhalt | Key-Entscheidung |
+|---|---|---|
+| 01 EDA | Struktur, Duplikate, Klassenbalance, Chi² | Konflikte auf Roh-Text entfernt |
+| 02 Preprocessing | Cleaning, Tokenisierung, Stemming/Lemma | Bereinigung auch auf text_clean-Basis |
+| 03 Vektorisierung | BoW, TF-IDF, LSA, Ablationsplan | Config C (Stemmed) als Hauptkandidat |
+| 04 Baseline | 20 Kombinationen, Bootstrap-KI, OvF-Gap | LogReg_balanced als Champion-Kandidat |
+| 05 Tuning | Grid Search, Nested CV, Threshold, FI | Default-Parameter optimal fuer LogReg |
+| 06 Fehleranalyse | Fehlertypen, Konfidenz, LC, SOTA | 91,1% FN ohne Disaster-Vokabular |
 
 ---
 
-## Ergebnisse
+## SOTA-Abstand & Grenzen
 
-*Wird nach Abschluss der Modellierungsphasen ergänzt (Phase 4–6).*
+Unser Champion (F1=0.777) liegt ~2,3 Punkte unter geschaetztem
+Human-Level (~0.800) und ~7,3 Punkte unter BERTweet-SOTA (0.850).
+
+**Hauptursache:** TF-IDF ist wortbasiert — 91,1% der verpassten
+Disasters enthalten kein klassisches Disaster-Wort. Das Modell
+kann Kontext, Metaphern und Ironie nicht erkennen.
+
+**Naechster Schritt (Bonus-Branch):** Transformer-Modelle
+(DistilBERT, BERTweet) auf Kaggle GPU (2×T4).
 
 ---
 
-## Präsentation
+## Technische Details
 
-Google-Slides-Link: *folgt nach Projektabschluss*
-Stil-Referenz: `Praesentationsstil_Store44.md`
+| Parameter | Wert |
+|---|---|
+| Python | 3.11 |
+| Conda Environment | disaster-tweets |
+| Hauptbibliotheken | scikit-learn, nltk, pandas, numpy, matplotlib |
+| Notebook-Hygiene | nbstripout (saubere Diffs) |
+| Visualisierungen | Store44-Farbschema (#1C1C1C, #F5A623, #6CB4E4) |
+| Versionierung | Conventional Commits |
 
 ---
 
-*Erik Gerst | MIST Term 10 | 2026*
+*MIST Term 10 | GitHub: AwaTekoete |
+Solo-Projekt | Standardprojekt abgeschlossen*
