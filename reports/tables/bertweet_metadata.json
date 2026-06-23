@@ -1,0 +1,12 @@
+{
+  "modell": "BERTweet (vinai/bertweet-base, Ep3)",
+  "f1_macro": 0.8249,
+  "roc_auc": 0.8785,
+  "mcc": 0.6559,
+  "precision_1": 0.8463,
+  "recall_1": 0.7269,
+  "f1_ci_low": 0.8041,
+  "f1_ci_high": 0.8468,
+  "fnr": 0.2731,
+  "fpr": 0.0903
+}

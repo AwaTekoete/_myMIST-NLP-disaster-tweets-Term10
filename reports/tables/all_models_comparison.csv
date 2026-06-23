@@ -1,0 +1,7 @@
+modell,f1_macro,mcc,precision_1,recall_1,fnr,fpr,trainingszeit_sek,parameter
+TF-IDF + LogReg (Baseline),0.7775,0.5551,0.741,0.728,0.272,0.174,1,5838
+DistilBERT,0.8079,0.6186,0.8056,0.7269,0.273,0.12,107,67000000
+BERT-base,0.8173,0.6361,0.8074,0.7505,0.25,0.123,224,109000000
+BERTweet (Champion),0.8249,0.6559,0.8463,0.7269,0.273,0.09,220,134000000
+Claude Haiku Zero-Shot,0.7929,0.6237,0.9123,0.6022,0.3978,0.0396,0,0
+Claude Haiku Few-Shot,0.7675,0.5835,0.9029,0.5552,0.4448,0.0408,0,0

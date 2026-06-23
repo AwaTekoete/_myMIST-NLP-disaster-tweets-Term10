@@ -1,0 +1,3 @@
+modell,f1_macro,roc_auc,mcc,precision_1,recall_1
+TF-IDF LogReg (Standard),0.7775,0.8487,0.5551,0.741,0.728
+DistilBERT (Bonus),0.8079,0.8783,0.6186,0.8056,0.7269

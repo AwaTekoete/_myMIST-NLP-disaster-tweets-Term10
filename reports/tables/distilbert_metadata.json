@@ -1,0 +1,19 @@
+{
+  "modell": "distilbert-base-uncased (Bonus, Phase 8)",
+  "f1_macro": 0.8079,
+  "roc_auc": 0.8783,
+  "mcc": 0.6186,
+  "precision_1": 0.8056,
+  "recall_1": 0.7269,
+  "f1_ci_low": 0.787,
+  "f1_ci_high": 0.8271,
+  "fnr": 0.2731,
+  "fpr": 0.12,
+  "tn": 711,
+  "fp": 97,
+  "fn": 151,
+  "tp": 402,
+  "epochs": 3,
+  "learning_rate": 2e-05,
+  "trainingszeit_sek": 107.0
+}

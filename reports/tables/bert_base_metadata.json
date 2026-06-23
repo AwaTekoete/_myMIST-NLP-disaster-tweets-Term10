@@ -1,0 +1,16 @@
+{
+  "modell": "bert-base-uncased (Phase 8, Stufe 3)",
+  "f1_macro": 0.8173,
+  "roc_auc": 0.8849,
+  "mcc": 0.6361,
+  "precision_1": 0.8074,
+  "recall_1": 0.7505,
+  "fnr": 0.2495,
+  "fpr": 0.1225,
+  "f1_ci_low": 0.7955,
+  "f1_ci_high": 0.8366,
+  "tn": 709,
+  "fp": 99,
+  "fn": 138,
+  "tp": 415
+}
